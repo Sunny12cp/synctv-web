@@ -109,7 +109,7 @@ const getAllSettings = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "获取设置列表失败",
+      title: "Failed To Get The Settings List",
       type: "error",
       message: err.response.data.error || err.message
     });
