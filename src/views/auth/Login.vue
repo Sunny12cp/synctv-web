@@ -30,15 +30,15 @@ const platforms: { [key: string]: { name: string; class: string } } = {
     class: "btn-white"
   },
   xiaomi: {
-    name: "小米",
+    name: "Xiaomi",
     class: "btn-white"
   },
   baidu: {
-    name: "百度",
+    name: "Baidu",
     class: "btn-white"
   },
   "baidu-netdisk": {
-    name: "百度网盘",
+    name: "Baidu-Netdisk",
     class: "btn-white"
   },
   gitee: {
@@ -69,8 +69,8 @@ const { execute: reqLoginApi, state: loginData } = LoginApi();
 const login = async () => {
   if (formData.value?.username === "" || formData.value?.password === "") {
     ElNotification({
-      title: "错误",
-      message: "请填写表单完整",
+      title: "Error",
+      message: "Please Fill It Completely",
       type: "error"
     });
     return;
@@ -84,8 +84,8 @@ const login = async () => {
     });
     if (!loginData.value)
       return ElNotification({
-        title: "错误",
-        message: "服务器并未返回token",
+        title: "Error",
+        message: "Invalid Token",
         type: "error"
       });
 
@@ -103,7 +103,7 @@ const login = async () => {
       updateUserInfo(state.value);
       localStorage.setItem("uname", state.value.username);
       ElNotification({
-        title: "登录成功",
+        title: "Success",
         type: "success"
       });
 
@@ -112,7 +112,7 @@ const login = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       message: err.response.data.error || err.message,
       type: "error"
     });
@@ -126,7 +126,7 @@ const getOAuth2Platforms = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       message: err.response.data.error || err.message,
       type: "error"
     });
@@ -146,7 +146,7 @@ const useOAuth2 = async (platform: string) => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       message: err.response.data.error || err.message,
       type: "error"
     });
@@ -165,7 +165,7 @@ onMounted(async () => {
         class="l-input"
         type="text"
         v-model="formData.username"
-        placeholder="用户名"
+        placeholder="Username"
         required
       />
       <br />
@@ -173,23 +173,23 @@ onMounted(async () => {
         class="l-input"
         type="password"
         v-model="formData.password"
-        placeholder="密码"
+        placeholder="Password"
         required
       />
       <br />
-      <div class="text-sm"><b>注意：</b>所有输入框最大只可输入32个字符</div>
+      <div class="text-sm"><b>Notice：</b>All input boxes can only input a maximum of 32 characters</div>
       <div>
         <input class="w-auto" type="checkbox" v-model="savePwd" />
-        <label title="明文保存到本机哦~">&nbsp;记住密码</label>
+        <label title="Save the plain text to this machine~">&nbsp;Remember PASSWORD</label>
       </div>
-      <button class="btn m-[10px]" @click="login">登录</button>
+      <button class="btn m-[10px]" @click="login">Log in</button>
     </form>
     <br />
     <div
       v-if="OAuth2Platforms_?.enabled && OAuth2Platforms_.enabled.length > 0"
       class="sm:w-96 w-full m-auto"
     >
-      <h4 class="text-[18px] font-bold">使用第三方平台登录</h4>
+      <h4 class="text-[18px] font-bold">Log in using a third-party platform</h4>
       <button
         v-for="item in OAuth2Platforms_?.enabled"
         :class="`inline-flex items-center btn ${
