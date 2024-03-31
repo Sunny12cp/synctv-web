@@ -20,8 +20,8 @@ const savePwd = ref(false);
 const register = async () => {
   if (formData.value?.username === "" || formData.value?.password === "") {
     ElNotification({
-      title: "错误",
-      message: "请填写表单完整",
+      title: "Error",
+      message: "Please fill it completely",
       type: "error"
     });
     return;
@@ -35,13 +35,13 @@ const register = async () => {
     });
     if (!userToken.value)
       return ElNotification({
-        title: "错误",
-        message: "服务器并未返回token",
+        title: "Error",
+        message: "Invalid Token",
         type: "error"
       });
     updateToken(userToken.value.token);
     ElNotification({
-      title: "注册成功",
+      title: "success",
       type: "success"
     });
 
@@ -52,7 +52,7 @@ const register = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       message: err.response.data.error || err.message,
       type: "error"
     });
@@ -67,16 +67,16 @@ const register = async () => {
         class="l-input"
         type="text"
         v-model="formData.username"
-        placeholder="用户名"
+        placeholder="Username"
         required
       />
       <br />
       <input class="l-input" type="text" v-model="formData.password" placeholder="密码" required />
       <br />
-      <div class="text-sm"><b>注意：</b>所有输入框最大只可输入32个字符</div>
+      <div class="text-sm"><b>Notic：</b>All input boxes can only input a maximum of 32 characters</div>
       <div>
         <input class="w-auto" type="checkbox" v-model="savePwd" />
-        <label title="明文保存到本机哦~">&nbsp;记住密码</label>
+        <label title="Save the plain text to this site~>&nbsp;记住密码</label>
       </div>
       <button class="btn m-[10px]" @click="register()">注册</button>
     </form>
