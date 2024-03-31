@@ -39,7 +39,7 @@ onMounted(async () => {
       <div>
         <el-popconfirm
           v-if="selections.length >= 2"
-          title="你确定要删除吗？"
+          title="Are you sure you want to delete? "
           @confirm="batchDelete(selections)"
         >
           <template #reference>
@@ -53,7 +53,7 @@ onMounted(async () => {
           type="primary"
           @click="batchReconnect(selections)"
         >
-          批量重连
+          Batch Reconnection
         </el-button>
 
         <el-button
@@ -61,7 +61,7 @@ onMounted(async () => {
           type="primary"
           @click="vendorEditorDialog?.openDialog(false)"
         >
-          添加解析器
+          Adding A Parser
         </el-button>
       </div>
     </div>
@@ -111,19 +111,19 @@ onMounted(async () => {
                 :src="getAppIcon('emby')"
               />
             </div>
-            <div v-else>禁用中</div>
+            <div v-else>Disabled</div>
           </template>
         </el-table-column>
         <el-table-column prop="info.backend.jwtSecret" label="JWT密钥" />
         <el-table-column prop="info.backend.timeOut" label="超时时间" />
-        <el-table-column prop="status" label="当前状态">
+        <el-table-column prop="status" label="Current Status">
           <template #default="scope">
             <el-tag v-if="scope" :type="statusList[scope.row.status as 0 | 1 | 2 | 3 | 4].type">{{
               statusList[scope.row.status as 0 | 1 | 2 | 3 | 4].name
             }}</el-tag>
-            <el-tag v-else type="info">无效状态</el-tag>
+            <el-tag v-else type="info">Invalid State</el-tag>
             <el-tooltip v-if="scope.row.status > 0">
-              <template #content>重新连接</template>
+              <template #content>Reconnect</template>
               <el-button
                 class="ml-2"
                 :icon="RefreshRight"
@@ -135,17 +135,17 @@ onMounted(async () => {
           </template>
         </el-table-column>
 
-        <el-table-column prop="info.backend.endpoint" label="操作">
+        <el-table-column prop="info.backend.endpoint" label="Operate">
           <template #default="scope">
             <el-button type="primary" @click="vendorEditorDialog?.openDialog(true, scope.row.info)"
-              >编辑</el-button
+              >Edit</el-button
             >
             <el-popconfirm
-              title="你确定要删除吗？"
+              title="Are You Sure You Want To Delete?"
               @confirm="batchDelete(scope.row.info.backend.endpoint)"
             >
               <template #reference>
-                <el-button type="danger">删除</el-button>
+                <el-button type="danger">Delete</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -154,7 +154,7 @@ onMounted(async () => {
     </div>
     <div class="card-footer flex flex-wrap justify-between overflow-hidden">
       <el-button type="success" @click="getVendorsList()" :loading="getVendorsListLoading"
-        >更新列表</el-button
+        >Update List</el-button
       >
       <el-pagination
         v-if="vendorsListState?.list?.length != 0"
