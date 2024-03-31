@@ -34,12 +34,12 @@ const tabs: Tabs[] = [
     component: RoomsManager
   },
   {
-    name: "Vendor Manager",
+    name: "Video Manager",
     icon: "🎞️",
     component: VendorManager
   },
   {
-    name: "Site Setting",
+    name: "Room Setting",
     icon: "🏛️",
     component: SiteSetting,
     showType: "room"
