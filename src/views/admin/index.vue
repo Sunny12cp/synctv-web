@@ -24,58 +24,58 @@ interface Tabs {
 
 const tabs: Tabs[] = [
   {
-    name: "用户管理",
+    name:"User Manager",
     icon: "🐵",
     component: UserManager
   },
   {
-    name: "房间管理",
+    name: "Rooms Manager",
     icon: "🏡",
     component: RoomsManager
   },
   {
-    name: "视频解析管理",
+    name: "Vendor Manager",
     icon: "🎞️",
     component: VendorManager
   },
   {
-    name: "房间设置",
+    name: "Site Setting",
     icon: "🏛️",
     component: SiteSetting,
     showType: "room"
   },
   {
-    name: "数据库设置",
+    name: "Database Setting",
     icon: "🗄️",
     component: SiteSetting,
     showType: "database"
   },
   {
-    name: "代理设置",
+    name: "Proxy Settings",
     icon: "😺",
     component: SiteSetting,
     showType: "proxy"
   },
   {
-    name: "RTMP设置",
+    name: "RTMP Setting",
     icon: "🎥",
     component: SiteSetting,
     showType: "rtmp"
   },
   {
-    name: "网站设置",
+    name: "User Setting",
     icon: "🌏",
     component: SiteSetting,
     showType: "user"
   },
   {
-    name: "OAuth2 管理",
+    name: "OAuth2 Setting",
     icon: "🪬",
     component: SiteSetting,
     showType: "oauth2"
   },
   {
-    name: "所有设置",
+    name: "All Settings",
     icon: "🔧",
     component: SiteSetting,
     showType: "all"
@@ -83,7 +83,7 @@ const tabs: Tabs[] = [
 ];
 
 const activeTab = shallowRef<Tabs>({
-  name: "用户管理",
+  name: "User Setting",
   icon: "🐵",
   component: UserManager
 });
