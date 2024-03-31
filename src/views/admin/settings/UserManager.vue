@@ -62,7 +62,7 @@ const getUserListApi = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "获取用户列表失败",
+      title: "Failed to obtain user list",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -82,14 +82,14 @@ const banUser = async (id: string, is: boolean) => {
     };
     is ? await banUserApi().execute(config) : await unBanUserApi().execute(config);
     ElNotification({
-      title: `${is ? "封禁" : "解封"}成功`,
+      title: `${is ? "Ban" : "Unblock"} Success`,
       type: "success"
     });
     await getUserListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -109,14 +109,14 @@ const setAdmin = async (id: string, is: boolean) => {
     };
     is ? await addAdminApi().execute(config) : await delAdminApi().execute(config);
     ElNotification({
-      title: "设置成功",
+      title: "Success",
       type: "success"
     });
     await getUserListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -141,14 +141,14 @@ const approve = async (id: string) => {
       }
     });
     ElNotification({
-      title: "设置成功",
+      title: "Success",
       type: "success"
     });
     await getUserListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -167,14 +167,14 @@ const delUser = async (id: string) => {
       }
     });
     ElNotification({
-      title: "删除成功",
+      title: "Success",
       type: "success"
     });
     await getUserListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -197,7 +197,7 @@ onMounted(async () => {
         <el-select
           v-model="role_"
           class="max-xl:my-2 max-lg:w-full"
-          placeholder="权限组"
+          placeholder="Rights Groups"
           style="width: 90px"
           @change="getUserListApi()"
         >
@@ -207,7 +207,7 @@ onMounted(async () => {
         <el-input
           class="w-fit max-lg:w-full"
           v-model="keyword"
-          placeholder="搜索"
+          placeholder="Search"
           @keyup.enter="getUserListApi()"
           required
         >
@@ -218,8 +218,8 @@ onMounted(async () => {
               placeholder="Select"
               style="width: 90px"
             >
-              <el-option label="综合" value="all" />
-              <el-option label="名称" value="name" />
+              <el-option label="All" value="all" />
+              <el-option label="Name" value="name" />
               <el-option label="ID" value="roomId" />
             </el-select>
           </template>
@@ -229,12 +229,12 @@ onMounted(async () => {
         </el-input>
       </div>
       <el-button class="max-xl:mt-3" type="primary" @click="newUserDialog?.openDialog">
-        添加用户
+        Add user
       </el-button>
     </div>
     <div class="card-body">
       <el-table :data="state?.list" v-loading="userListLoading" style="width: 100%">
-        <el-table-column prop="username" label="用户名" width="200" />
+        <el-table-column prop="username" label="Username" width="200" />
         <el-table-column prop="id" label="ID" width="120">
           <template #default="scope">
             <div class="flex overflow-hidden text-ellipsis max-w-[100px]">
@@ -243,22 +243,22 @@ onMounted(async () => {
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="role" label="权限组" width="70">
+        <el-table-column prop="role" label="Role" width="70">
           <template #default="scope">
             {{ getRole(scope.row.role) }}
           </template>
         </el-table-column>
-        <el-table-column prop="roomList" label="房间列表" width="120">
+        <el-table-column prop="roomList" label="Room List" width="120">
           <template #default="scope">
             <el-button type="primary" plain @click="getUserRoom(scope.row.id)"> 查看 </el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="注册时间" width="160">
+        <el-table-column prop="createdAt" label="Creation Time" width="160">
           <template #default="scope">
             {{ new Date(scope.row.createdAt).toLocaleString() }}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right" label="Operate">
           <template #default="scope">
             <el-button
               v-if="scope.row.role === ROLE.Pending"
@@ -266,7 +266,7 @@ onMounted(async () => {
               @click="approve(scope.row.id)"
               :loading="approveLoading"
             >
-              通过注册
+              By registering
             </el-button>
             <div v-else>
               <el-button
@@ -274,12 +274,12 @@ onMounted(async () => {
                 type="warning"
                 @click="banUser(scope.row.id, false)"
               >
-                解封
+                Unblock
               </el-button>
 
               <div v-else class="phone-button">
                 <el-button type="danger" plain @click="banUser(scope.row.id, true)">
-                  封禁
+                  Ban
                 </el-button>
 
                 <el-button
@@ -287,16 +287,16 @@ onMounted(async () => {
                   type="primary"
                   @click="setAdmin(scope.row.id, true)"
                 >
-                  设为管理
+                  Set as Admin
                 </el-button>
 
                 <el-button v-else type="warning" @click="setAdmin(scope.row.id, false)">
-                  取消管理
+                  Unmanage
                 </el-button>
 
-                <el-popconfirm title="你确定要删除这个用户吗？" @confirm="delUser(scope.row.id)">
+                <el-popconfirm title="Are you sure you want to delete this user?" @confirm="delUser(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger"> 删除 </el-button>
+                    <el-button type="danger"> Delete </el-button>
                   </template>
                 </el-popconfirm>
               </div>
@@ -307,20 +307,20 @@ onMounted(async () => {
     </div>
     <div class="card-footer flex flex-wrap justify-between overflow-hidden">
       <el-button type="success" @click="getUserListApi()" :loading="userListLoading">
-        更新列表
+        Update List
       </el-button>
 
       <div class="flex flex-wrap">
         <div class="text-base mr-2 max-xl:my-2">
-          排序方式：<el-select
+          Sort By：<el-select
             v-model="sort"
             class="mr-2"
-            placeholder="排序方式"
+            placeholder="Sort By"
             @change="getUserListApi()"
             style="width: 150px"
           >
-            <el-option label="用户名" value="username" />
-            <el-option label="注册时间" value="createdAt" />
+            <el-option label="Username" value="username" />
+            <el-option label="Creation Time" value="createdAt" />
           </el-select>
           <button
             class="btn btn-dense"
