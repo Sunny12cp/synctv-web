@@ -46,7 +46,7 @@ const getRoomListApi = async () => {
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "获取房间列表失败",
+      title: "Failed To Get Room List",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -68,14 +68,14 @@ const banRoom = async (id: string, is: boolean) => {
     };
     is ? await ban(config) : await unBan(config);
     ElNotification({
-      title: `${is ? "封禁" : "解封"}成功`,
+      title: `${is ? "Ban" : "Unblock"} Success`,
       type: "success"
     });
     await getRoomListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -94,14 +94,14 @@ const approveCreate = async (id: string) => {
       }
     });
     ElNotification({
-      title: "设置成功",
+      title: "Success",
       type: "success"
     });
     await getRoomListApi();
   } catch (err: any) {
     console.error(err);
     ElNotification({
-      title: "错误",
+      title: "Error",
       type: "error",
       message: err.response.data.error || err.message
     });
@@ -132,7 +132,7 @@ onMounted(async () => {
         <el-input
           class="w-fit max-lg:w-full max-xl:my-2"
           v-model="keyword"
-          placeholder="搜索"
+          placeholder="State"
           @keyup.enter="getRoomListApi()"
           required
         >
@@ -143,8 +143,8 @@ onMounted(async () => {
               placeholder="Select"
               style="width: 90px"
             >
-              <el-option label="综合" value="all" />
-              <el-option label="名称" value="name" />
+              <el-option label="All" value="all" />
+              <el-option label="Name" value="name" />
               <el-option label="ID" value="roomId" />
             </el-select>
           </template>
@@ -155,15 +155,15 @@ onMounted(async () => {
       </div>
 
       <div class="text-base max-xl:w-full">
-        排序方式：<el-select
+        Sort By：<el-select
           v-model="sort"
           class="mr-2"
-          placeholder="排序方式"
+          placeholder="Sort By"
           @change="getRoomListApi()"
           style="width: 150px"
         >
-          <el-option label="房间名称" value="name" />
-          <el-option label="创建时间" value="createdAt" />
+          <el-option label="Room Name" value="name" />
+          <el-option label="Created Time" value="createdAt" />
         </el-select>
         <button
           class="btn btn-dense"
@@ -178,7 +178,7 @@ onMounted(async () => {
     </div>
     <div class="card-body">
       <el-table :data="state?.list" v-loading="roomListLoading" style="width: 100%">
-        <el-table-column prop="roomName" label="房间名" width="150" />
+        <el-table-column prop="roomName" label="Room Name" width="150" />
         <el-table-column prop="roomId" label="ID" width="120">
           <template #default="scope">
             <div class="flex overflow-hidden text-ellipsis max-w-[100px]">
@@ -187,36 +187,36 @@ onMounted(async () => {
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="creator" label="创建人">
+        <el-table-column prop="creator" label="Creator">
           <template #default="scope">
             {{ scope.row.creator }}
           </template>
         </el-table-column>
-        <el-table-column prop="peopleNum" label="在线人数" width="80">
+        <el-table-column prop="peopleNum" label="Online Users" width="80">
           <template #default="scope">
             <el-tag disabled :type="scope.row.peopleNum > 0 ? 'success' : 'danger'">
               {{ scope.row.peopleNum }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="needPassword" label="密码保护" width="100">
+        <el-table-column prop="needPassword" label="Password Protection" width="100">
           <template #default="scope">
             <el-tag disabled :type="scope.row.needPassword ? 'danger' : 'success'">
-              {{ scope.row.needPassword ? "有密码" : "无密码" }}
+              {{ scope.row.needPassword ? "Password" : "No Password" }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="创建时间">
+        <el-table-column prop="createdAt" label="Creation time">
           <template #default="scope">
             {{ useTimeAgo(new Date(scope.row.createdAt)).value }}
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="Status" width="100">
           <template #default="scope">
             {{ getStatus(scope.row.status) }}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right" label="Oprate">
           <template #default="scope">
             <el-button
               v-if="scope.row.status !== RoomStatus.Banned"
@@ -224,7 +224,7 @@ onMounted(async () => {
               :loading="banLoading"
               @click="banRoom(scope.row.roomId, true)"
             >
-              封禁
+              Ban
             </el-button>
             <el-button
               v-else
@@ -232,7 +232,7 @@ onMounted(async () => {
               :loading="unBanLoading"
               @click="banRoom(scope.row.roomId, false)"
             >
-              解封
+              Unban
             </el-button>
             <el-button
               v-if="scope.row.status === RoomStatus.Pending"
@@ -240,7 +240,7 @@ onMounted(async () => {
               :loading="banLoading"
               @click="approveCreate(scope.row.roomId)"
             >
-              允许创建
+              Allow Creation
             </el-button>
           </template>
         </el-table-column>
@@ -248,7 +248,7 @@ onMounted(async () => {
     </div>
     <div class="card-footer flex flex-wrap justify-between overflow-hidden">
       <el-button type="success" @click="getRoomListApi()" :loading="roomListLoading"
-        >更新列表</el-button
+        >Update List</el-button
       >
       <el-pagination
         v-if="state?.list?.length != 0"
